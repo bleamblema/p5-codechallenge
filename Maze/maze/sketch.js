@@ -1,11 +1,12 @@
 var cols, rows;
-var w = 40;
+var w = 20;
 var grid = [];
 var current;
+var stack = [];
 
 
 function setup() {
-	frameRate(5);
+	frameRate(15);
   	var canvas = createCanvas(400, 400);
   	canvas.position(windowWidth/2 - width/2, windowHeight/2 - height/2);
   	cols = floor(width/w);
@@ -33,12 +34,15 @@ function draw() {
 	if(next){
 		next.visited = true;
 
+		stack.push(current);
+
 		removeWalls(current, next);
 
 		current = next;
+	}else if(stack.length > 0){
+		var cell = stack.pop();
+		current = cell;
 	}
-
-
 }
 
 function index(i, j){
@@ -57,7 +61,7 @@ function Cell(i, j){
 		var x = this.i * w;
 		var y = this.j * w;
 		noStroke();
-		fill(0,0,255,100);
+		fill(0,202,0);
 		rect(x, y, w, w);
 	}
 
@@ -96,7 +100,7 @@ function Cell(i, j){
 
 		if(this.visited){
 			noStroke();
-			fill(255,0,100); 
+			fill(202,0,102); 
 			rect(x,y,w,w);
 		}
 
